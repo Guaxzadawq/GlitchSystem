@@ -1,30 +1,31 @@
-ObterKey.startRequestNetwork(
-    RequestNetworkController.GET,
-    "http://guaxzadawq.glitchsystem.github.io/", // seu link do replit
-    "codigo",
-    new RequestNetwork.RequestListener() {
-        @Override
-        public void onResponse(String tag, String response, HashMap<String, Object> responseHeaders) {
-            try {
-                JSONObject obj = new JSONObject(response);
-                String codigoAtual = obj.getString("codigo");
+const express = require("express");
+const app = express();
 
-                if(edittext_codigo.getText().toString().equals(codigoAtual)) {
-                    SketchwareUtil.showMessage(getApplicationContext(), "✅ Código correto!");
-                    // Aqui você pode liberar o acesso, tipo:
-                    // Intent i = new Intent(getApplicationContext(), HomeActivity.class);
-                    // startActivity(i);
-                } else {
-                    SketchwareUtil.showMessage(getApplicationContext(), "❌ Código incorreto!");
-                }
-            } catch (Exception e) {
-                SketchwareUtil.showMessage(getApplicationContext(), "Erro: " + e.toString());
-            }
-        }
+let codigoAtual = gerarCodigo();
 
-        @Override
-        public void onErrorResponse(String tag, String message) {
-            SketchwareUtil.showMessage(getApplicationContext(), "Erro de conexão!");
-        }
-    }
-);
+// Função para gerar um código aleatório
+function gerarCodigo() {
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  let codigo = "";
+  for (let i = 0; i < 6; i++) {
+    codigo += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return codigo;
+}
+
+// Atualiza o código a cada 1 hora (3600000 ms)
+setInterval(() => {
+  codigoAtual = gerarCodigo();
+  console.log("Novo código:", codigoAtual);
+}, 3600000);
+
+// Rota para exibir o código
+app.get("/codigo", (req, res) => {
+  res.json({ codigo: codigoAtual });
+});
+
+// 🟢 Importante: use a porta do Replit
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Servidor rodando na porta ${PORT}`);
+});
