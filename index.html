@@ -21,32 +21,32 @@
     h1 {
       font-size: 1.3rem;
       color: #aaa;
-      margin-bottom: 20px;
+      margin-bottom: 25px;
       letter-spacing: 1px;
     }
 
     #codigo {
       background: #111;
       border: 2px solid #00ff9d;
-      border-radius: 10px;
-      padding: 15px 25px;
-      font-size: 2rem;
-      box-shadow: 0 0 15px #00ff9d33;
+      border-radius: 12px;
+      padding: 18px 35px;
+      font-size: 2.2rem;
+      box-shadow: 0 0 20px #00ff9d33;
       user-select: all;
       transition: all 0.3s ease;
     }
 
     #codigo:hover {
-      box-shadow: 0 0 25px #00ff9d88;
-      transform: scale(1.03);
+      box-shadow: 0 0 30px #00ff9d88;
+      transform: scale(1.04);
     }
 
     button {
-      margin-top: 25px;
+      margin-top: 30px;
       background: #00ff9d;
       border: none;
-      border-radius: 8px;
-      padding: 10px 25px;
+      border-radius: 10px;
+      padding: 12px 28px;
       color: #0d0d0d;
       font-size: 1rem;
       cursor: pointer;
@@ -69,27 +69,23 @@
 </head>
 <body>
   <h1>🔐 Código Atual</h1>
-  <div id="codigo">Carregando...</div>
+  <div id="codigo">Gerando...</div>
   <button id="btn">🔄 Gerar Novo Código</button>
 
   <footer>guaxzada.dev</footer>
 
   <script>
-    const codigoDiv = document.getElementById("codigo");
-    const btn = document.getElementById("btn");
-
-    async function gerarCodigo() {
-      try {
-        const resposta = await fetch("https://of217vt.worf.replit.dev/");
-        const data = await resposta.json();
-        codigoDiv.textContent = data.codigo || "Erro ao gerar";
-      } catch (err) {
-        codigoDiv.textContent = "Erro de conexão";
+    function gerarCodigo() {
+      const caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+      let codigo = "";
+      for (let i = 0; i < 6; i++) {
+        codigo += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
       }
+      document.getElementById("codigo").textContent = codigo;
     }
 
-    btn.addEventListener("click", gerarCodigo);
-    gerarCodigo();
+    document.getElementById("btn").addEventListener("click", gerarCodigo);
+    gerarCodigo(); // gera ao abrir a página
   </script>
 </body>
 </html>
