@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gerador de Código</title>
+  <style>
+    body {
+      background: #0d1117;
+      color: #c9d1d9;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    button {
+      background: #238636;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover { background: #2ea043; }
+    input {
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 5px;
+      border: none;
+      outline: none;
+    }
+  </style>
+</head>
+<body>
+  <h2>🔐 Gerador de Código</h2>
+  <p id="codigo"></p>
+
+  <button onclick="gerarCodigo()">Gerar novo código</button>
+
+  <input type="text" id="entrada" placeholder="Digite o código para verificar">
+  <button onclick="verificarCodigo()">Verificar</button>
+
+  <p id="resultado"></p>
+
+  <script>
+    let codigoAtual = gerarCodigo();
+
+    function gerarCodigo() {
+      const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+      let codigo = "";
+      for (let i = 0; i < 6; i++) {
+        codigo += chars[Math.floor(Math.random() * chars.length)];
+      }
+      document.getElementById("codigo").innerText = "Código atual: " + codigo;
+      codigoAtual = codigo;
+      return codigo;
+    }
+
+    function verificarCodigo() {
+      const entrada = document.getElementById("entrada").value.trim().toUpperCase();
+      const resultado = document.getElementById("resultado");
+
+      if (entrada === codigoAtual) {
+        resultado.innerHTML = "✅ Código válido!";
+        resultado.style.color = "#2ea043";
+      } else {
+        resultado.innerHTML = "❌ Código inválido ou expirado.";
+        resultado.style.color = "#f85149";
+      }
+    }
+
+    // Gera novo código automaticamente a cada 1 hora
+    setInterval(gerarCodigo, 3600000);
+  </script>
+</body>
+</html>
