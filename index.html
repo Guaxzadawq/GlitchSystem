@@ -6,73 +6,90 @@
   <title>Gerador de Código</title>
   <style>
     body {
-      background: #0d1117;
-      color: #c9d1d9;
-      font-family: Arial, sans-serif;
+      background-color: #0d0d0d;
+      color: #00ff9d;
+      font-family: "Roboto Mono", monospace;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       height: 100vh;
+      margin: 0;
+      text-align: center;
     }
+
+    h1 {
+      font-size: 1.3rem;
+      color: #aaa;
+      margin-bottom: 20px;
+      letter-spacing: 1px;
+    }
+
+    #codigo {
+      background: #111;
+      border: 2px solid #00ff9d;
+      border-radius: 10px;
+      padding: 15px 25px;
+      font-size: 2rem;
+      box-shadow: 0 0 15px #00ff9d33;
+      user-select: all;
+      transition: all 0.3s ease;
+    }
+
+    #codigo:hover {
+      box-shadow: 0 0 25px #00ff9d88;
+      transform: scale(1.03);
+    }
+
     button {
-      background: #238636;
-      color: white;
+      margin-top: 25px;
+      background: #00ff9d;
       border: none;
-      padding: 10px 20px;
-      border-radius: 5px;
+      border-radius: 8px;
+      padding: 10px 25px;
+      color: #0d0d0d;
+      font-size: 1rem;
       cursor: pointer;
+      font-weight: bold;
+      transition: background 0.3s, transform 0.2s;
     }
-    button:hover { background: #2ea043; }
-    input {
-      margin-top: 10px;
-      padding: 10px;
-      border-radius: 5px;
-      border: none;
-      outline: none;
+
+    button:hover {
+      background: #00cc7a;
+      transform: scale(1.05);
+    }
+
+    footer {
+      position: absolute;
+      bottom: 15px;
+      font-size: 0.8rem;
+      color: #444;
     }
   </style>
 </head>
 <body>
-  <h2>🔐 Gerador de Código</h2>
-  <p id="codigo"></p>
+  <h1>🔐 Código Atual</h1>
+  <div id="codigo">Carregando...</div>
+  <button id="btn">🔄 Gerar Novo Código</button>
 
-  <button onclick="gerarCodigo()">Gerar novo código</button>
-
-  <input type="text" id="entrada" placeholder="Digite o código para verificar">
-  <button onclick="verificarCodigo()">Verificar</button>
-
-  <p id="resultado"></p>
+  <footer>guaxzada.dev</footer>
 
   <script>
-    let codigoAtual = gerarCodigo();
+    const codigoDiv = document.getElementById("codigo");
+    const btn = document.getElementById("btn");
 
-    function gerarCodigo() {
-      const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-      let codigo = "";
-      for (let i = 0; i < 6; i++) {
-        codigo += chars[Math.floor(Math.random() * chars.length)];
-      }
-      document.getElementById("codigo").innerText = "Código atual: " + codigo;
-      codigoAtual = codigo;
-      return codigo;
-    }
-
-    function verificarCodigo() {
-      const entrada = document.getElementById("entrada").value.trim().toUpperCase();
-      const resultado = document.getElementById("resultado");
-
-      if (entrada === codigoAtual) {
-        resultado.innerHTML = "✅ Código válido!";
-        resultado.style.color = "#2ea043";
-      } else {
-        resultado.innerHTML = "❌ Código inválido ou expirado.";
-        resultado.style.color = "#f85149";
+    async function gerarCodigo() {
+      try {
+        const resposta = await fetch("https://of217vt.worf.replit.dev/");
+        const data = await resposta.json();
+        codigoDiv.textContent = data.codigo || "Erro ao gerar";
+      } catch (err) {
+        codigoDiv.textContent = "Erro de conexão";
       }
     }
 
-    // Gera novo código automaticamente a cada 1 hora
-    setInterval(gerarCodigo, 3600000);
+    btn.addEventListener("click", gerarCodigo);
+    gerarCodigo();
   </script>
 </body>
 </html>
